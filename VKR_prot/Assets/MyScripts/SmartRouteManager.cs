@@ -22,14 +22,12 @@ public class SmartRouteManager : MonoBehaviour
     [Header("Маршруты")]
     public List<RouteData> routes;
 
-    // Кнопки маршрутов, привязанные вручную в инспекторе
     public Button routeButton1;
     public Button routeButton2;
     public Button routeButton3;
 
-    // Панели UI
-    public GameObject routeSelectionPanel;   // Панель с кнопками маршрутов
-    public GameObject resultPanel;           // Панель с результатами
+    public GameObject routeSelectionPanel;   
+    public GameObject resultPanel;          
 
     private Directions directions;
     private List<GameObject> lineInstances = new();
@@ -37,7 +35,7 @@ public class SmartRouteManager : MonoBehaviour
     private readonly Color[] routeColors = new Color[]
     {
         Color.red,
-        new Color(0f, 0.5f, 0f), // тёмно-зелёный
+        new Color(0f, 0.5f, 0f), 
         Color.blue
     };
 
@@ -45,12 +43,10 @@ public class SmartRouteManager : MonoBehaviour
     {
         directions = MapboxAccess.Instance.Directions;
 
-        // Добавляем обработчики для кнопок
         routeButton1.onClick.AddListener(() => ShowRouteInfo(routes[0]));
         routeButton2.onClick.AddListener(() => ShowRouteInfo(routes[1]));
         routeButton3.onClick.AddListener(() => ShowRouteInfo(routes[2]));
 
-        // Изначально показываем панель с кнопками маршрутов
         routeSelectionPanel.SetActive(true);
         resultPanel.SetActive(false);
 
@@ -64,26 +60,23 @@ public class SmartRouteManager : MonoBehaviour
 
     void ShowRouteInfo(RouteData route)
     {
-        // Скрываем панель выбора маршрутов
         routeSelectionPanel.SetActive(false);
 
-        // Показываем панель с результатом
         resultPanel.SetActive(true);
 
-        string routeInfo = $"{route.name}\n{route.description}\nСтоимость: {route.cost}₽\nВремя: {route.durationHours} ч\n\n";
+        string routeInfo = $"{route.name}\n{route.description}\nСтоимость: {route.cost}Р\nВремя: {route.durationHours} ч\n\n";
 
-        // Описание маршрута (почему он хороший/плохой)
-        if (route.durationHours < 8 && route.cost > 30000)
+        if (route.durationHours < 8 && route.cost > 11500)
         {
-            routeInfo += "⚠ Это быстрый, но дорогой маршрут. Подходит для тех, кто не хочет тратить время.";
+            routeInfo += "Это быстрый, но дорогой маршрут. Подходит для тех, кто не хочет тратить время.";
         }
-        else if (route.durationHours > 15)
+        else if (route.durationHours > 14)
         {
-            routeInfo += "⏳ Этот маршрут дешевле, но занимает больше времени. Подходит для тех, кто не спешит.";
+            routeInfo += "Этот маршрут не самый оптимальный, он занимает много времени и имеет больщую стоимость.";
         }
         else
         {
-            routeInfo += "✅ Этот маршрут оптимален по времени и стоимости.";
+            routeInfo += "Этот маршрут оптимален по времени и стоимости.";
         }
 
         resultText.text = routeInfo;
@@ -124,7 +117,6 @@ public class SmartRouteManager : MonoBehaviour
         });
     }
 
-    // Этот метод можно добавить, если нужно вернуть пользователя на панель выбора маршрутов
     public void ReturnToRouteSelection()
     {
         resultPanel.SetActive(false);
